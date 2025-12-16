@@ -1,11 +1,26 @@
-# README
+# AggieAssign
 
-## Team Name: AggieAssign
+## What is AggieAssign?
+AggieAssign was undertaken as a final project for CSCE
+606. This project was solicited by Dr. Bettati, one of the associate heads of
+the Texas A&M Computer Science Department. One of his responsibilities
+is the formation of the department’s semester course schedule.
+This task was previously done manually and required a great deal of effort.
+Scheduling demands balancing physical constraints,
+such as room occupancy or extra classroom features necessary
+for lab courses. There are also soft preferences to consider,
+namely the instructor’s affinity for course material and time
+slot. The core goal of this project was to algorithmically
+generate quality schedules, which could then be tweaked by
+hand if needed to generate the final product.
 
-## Summary
-The main customer need is to have an application that creates an **efficient classroom schedule** which for each course section, assigns a time, a room, and an instructor, while satisfying a range of constraints. These constraints include room capacity, instructor availability, teaching style requirements, and course conflicts. The system also needs to consider instructor preferences, such as desired teaching times and course preferences, in order to maximize their satisfaction. The application provides a solution by providing an easy to understand interface which allows the user to upload data, preferences and constraints as csv files. It then automatically generates a schedule that meets both hard constraints and soft preferences, while minimizing wasted classroom space and balancing instructor workloads. The application will have additional features such as the ability to manually override schedules and see detailed schedule views, as well as export the generated schedules for easy sharing.
-
-The key stakeholder for this application is the Associate Department Head, who is responsible for creating the teaching schedule before every semester. The secondary stakeholders are the Instructors and Students, who benefit indirectly from having flexible course schedules. The application integrates all scheduling requirements into one platform, allowing for streamlined data input, constraint satisfaction, and schedule optimization, while being scalable for future adjustments.
+## How does AggieAssign work?
+AggieAssign requires the user to submit data about courses, rooms, and professors. This information
+is then used to generate happiness scores for each possible assignment. Our scheduling objective
+is twofold: minimize room wastefulness and maximize professor happiness. Both of these problems can
+be cast as integer linear programs, enabling efficient solutions via external libraries. On real data
+collected from the Spring 2024 semester, AggieAssign found a schedule with >80% happiness in under a minute. 
+For more details on our algorithm, take a look at the [Final Report](./documentation/Fall2024/AggieAssignReport.pdf).
 
 ## Table of Contents
 - [Important Links](#important-links)
@@ -19,36 +34,9 @@ The key stakeholder for this application is the Associate Department Head, who i
 
 ## Important Links
 - **App**: [Live Application](https://faculty-teaching-assignment-31f5f9c405bc.herokuapp.com)
-- **Code Climate Report**: [Code Quality Report](https://codeclimate.com/github/tamu-edu-students/Faculty-Teaching-Assignment)
-- **Team Working Agreement**: [Working Agreement](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/documentation/documentation/Fall2024/Team%20Working%20Agreement.md)
 - **Application Demo**: [Application Demo Video](https://youtu.be/020dlN_XJJg)
-- **Final Report**: [Final Report](./documentation/Fall2024/Final%20Report.pdf)
+- **Final Report**: [Final Report](./documentation/Fall2024/AggieAssignReport.pdf)
 - **Presentation**: [Presentation](./documentation/Fall2024/Final%20Presentation.pptx)
-
-### Sprint Documentation:
-- **Sprint 1**: 
-  - **Goal**: Setup and understand the project, get client data, and enable user login and authentication.
-  - [Sprint Plan](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/documentation/documentation/Fall2024/Sprint_1_Plan.pdf)
-  - [Retrospective](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint%201%20Retrospective.pdf)
-
-- **Sprint 2**:
-  - **Goal**: Create raw views for all data uploads.
-  - [Sprint Plan](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_2_Plan.pdf)
-  - [Retrospective](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_2_Retrospective.pdf)
-
-- **Sprint 3**:
-  - **Goal**: Implement the algorithm on actual client-provided data.
-  - [Sprint Plan](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_3_Plan.pdf)
-  - [Retrospective](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_3_Retrospective.pdf)
- 
-- **Sprint 4**:
-  - **Goal**: Integrate the algorithm and soft constraints, straighten out some issues, and get the app running end to end.
-  - [Sprint Plan](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_4_Plan.pdf)
-  - [Retrospective](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/Sprint_4_Retrospective.pdf)
-
----
-
-
 
 
 ## Build Instructions
@@ -56,7 +44,6 @@ The key stakeholder for this application is the Associate Department Head, who i
 ### Prerequisites
 - **Ruby**: Version `>= 2.7.0`
 - **C Compiler**: Required for native extensions (e.g., `gcc` or `clang`)
-- **wget**: Used for downloading assets
 
 Clone repository:
 ```
@@ -69,16 +56,7 @@ bundle install
 rake glpk:install
 ```
 The schedule builder relies on [GLPK](https://www.gnu.org/software/glpk/), an open-source linear program solver. This is downloaded, configured, and installed by the `glpk:install` Rake task. By default, it is installed to the top-level app directory, as to prevent the user from having to add the required binaries to their path. See `lib/tasks/glpk.rake` for details.
-<details>
-  <summary>Facing issues?</summary>
-  <ul>
-    <li>Install <code>wget</code> on your system so that the GLPK solver can be installed correctly</li>
-    <li>On Linux/macOS, use:</li>
-    <pre><code>sudo apt install wget</code></pre>
-    <li>Or:</li>
-    <pre><code>brew install wget</code></pre>
-  </ul>
-</details>
+
 
 # Getting Started with Setup and Deployment
 
@@ -113,7 +91,7 @@ Setup your Google OAuth Rails Credentials using Google Developer Console.
 ### Edit the Credentials
 
 ```bash
-  EDITOR=nano rails credentials:edit
+  EDITOR=vim rails credentials:edit
 ```
 
 The credentials file will open in the editor.
@@ -131,18 +109,18 @@ Add your Google OAuth credentials to the file in the following format. Make sure
 After adding your credentials, save the changes and exit the editor.
 
 For a more detailed explantion, see 
-[Setup Google OAuth on Google's End](https://github.com/tamu-edu-students/Google-Auth-Ruby-By-JD?tab=readme-ov-file#setup-google-oauth-on-googles-end) 
+[Setup Google OAuth](https://github.com/tamu-edu-students/Google-Auth-Ruby-By-JD?tab=readme-ov-file#setup-google-oauth-on-googles-end) 
 and 
 [Add OAuth ID and Secret to Rails Credentials](https://github.com/tamu-edu-students/Google-Auth-Ruby-By-JD?tab=readme-ov-file#add-oauth-id-and-secret-to-rails-credentials).
 
-If steps are followed correctly you would have your ```RAILS_MASTER_KEY``` in ```config/master.key```. NEVER EVER COMMIT THIS TO GIT.
+If steps are followed correctly you would have your ```RAILS_MASTER_KEY``` in ```config/master.key```. ** DO NOT COMMIT THIS TO REMOTE! ** By default, the `config/master.key` is included in the `.gitignore`.
 <details>
   <summary>Facing issues?</summary>
   You might need to delete the <code>credentials.yml.enc</code> file which in the <code>config/</code> folder and try to configure the master key again
 </details>
 ---
 
-### 3. Set Up Database (Locally)
+### 3. Set Up Local Database
 Run database migrations and set up the database:
 
 ```bash
@@ -226,19 +204,18 @@ If the above steps do not work, see [Deploy to Heroku](https://github.com/tamu-e
 ## Using the application
 For a pdf version refer to [User Documentation](https://github.com/tamu-edu-students/Faculty-Teaching-Assignment/blob/main/documentation/Fall2024/AggieAssign%20-%20User%20Documentation.pdf)
 1. Login using your TAMU Email ID
-2. The landing page shows the schedules you have been working on
-3. Click on ```Create a New Schedule``` to create one with a name and semester
-4. Click on the schedule card to upload required files
+2. Click on ```Create a New Schedule``` to create one with a name and semester
+3. Click on the schedule card to upload required files
     - Sample files are in the ```db/sample``` folder of the project
     - Upload the rooms, courses and instructors csv files
-5. Once the files are uploaded, click on ```View Data``` to view the available data for this schedule
-6. Click on ```Add Predefined Courses``` to lock any course/instructor to a particular time slot
+4. Once the files are uploaded, click on ```View Data``` to view the available data for this schedule
+5. Click on ```Add Predefined Courses``` to lock any course/instructor to a particular time slot
     - Click on the Lock icon to lock and unclock a particular time slot and room to ensure no courses are scheduled in that slot
     - Click on a particular cell and select a course from the sidebar to assign a course to a particular slot and room
-7. Click on ```Generate Remaining``` to generate the schedule
-8. If there is an error in the data that is highlighted, such as the number of courses being more than the instructor hours, go back to ```View Data``` and hide courses that don't need to be scheduled
-9. Once the schedule is generated, room bookings can be deleted or locked to modify the schedule as needed
-10. Click on ```Export``` to download the schedule as a csv
+6. Click on ```Generate Remaining``` to generate the schedule
+7. If there is an error in the data that is highlighted, such as the number of courses being more than the instructor hours, go back to ```View Data``` and hide courses that don't need to be scheduled
+8. Once the schedule is generated, room bookings can be deleted or locked to modify the schedule as needed
+9. Click on ```Export``` to download the schedule as a csv
 
 ## Run Tests Locally
 After cloning and setting up the repository, run tests from the project root:
@@ -251,12 +228,12 @@ After cloning and setting up the repository, run tests from the project root:
    bundle exec cucumber
    ```
 
-Ensure that all tests pass with a coverage greater than 90%. Coverage reports are available in the ```coverage/``` folder.
+Coverage reports are available in the ```coverage/``` folder. For those interested in contributing to AggieAssign, we require >90% coverage for any new pull requests.
 
 ## Contact
 In case of any issues or queries, please contact the developers:
 * Wahib Kapdi: [wahibkapdi@tamu.edu](mailto:wahibkapdi@tamu.edu)
-* Colby Enders: [colby.endres@tamu.edu](mailto:colby.endres@tamu.edu)
+* Colby Endres: [colby.endres@tamu.edu](mailto:colby.endres@tamu.edu)
 * Navya Unnikrishnan: [navya_unni@tamu.edu](mailto:navya_unni@tamu.edu)
 * Navya Priya Nandimandalam: [navyapriya_n@tamu.edu](mailto:navyapriya_n@tamu.edu)
 * Pavithra Gopalakrishnan: [pgopal719@tamu.edu](mailto:pgopal719@tamu.edu)
